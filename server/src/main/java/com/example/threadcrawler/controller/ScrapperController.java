@@ -1,8 +1,10 @@
 package com.example.threadcrawler.controller;
 
+import com.example.threadcrawler.entity.Message;
 import com.example.threadcrawler.service.ExampleThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,8 @@ public class ScrapperController {
     SimpMessagingTemplate template;
 
     @MessageMapping("/links.start")
-    public String sendMessage() {
+    public String sendMessage(@Payload Message message) {
+        System.out.println(message);
         new ExampleThread(this.template).start();
         return "Teste";
     }
