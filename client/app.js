@@ -19,7 +19,7 @@ function connect() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/link.finish', function (search) {
-            console.log(search.body)
+            console.log(search)
         });
         stompClient.subscribe('/topic/link.stats.count', function (count) {
             console.log(count.body)

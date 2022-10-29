@@ -1,16 +1,13 @@
-package com.example.threadcrawler.service;
+package com.example.threadcrawler.core;
 
-import com.example.threadcrawler.RunningStats;
 import com.example.threadcrawler.entity.Product;
 import com.example.threadcrawler.entity.SearchRequest;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +26,7 @@ public class ShopSearchThread extends Thread {
         List<Future<List<Product>>> productsSearching = new ArrayList<>();
         var executor = Executors.newFixedThreadPool(10);
         for (var term : request.getTerms()) {
-            var t = new TermSearchThread(term, this.request.getShop(), this.stats);
+            var t = new TermSearchThread(this.request.getShop(), term, this.stats);
             Future<List<Product>> productsFromTerm = executor.submit(t);
             productsSearching.add(productsFromTerm);
         }

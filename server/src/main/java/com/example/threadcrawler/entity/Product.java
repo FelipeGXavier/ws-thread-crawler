@@ -6,10 +6,13 @@ public class Product {
     private final String url;
     private final String price;
 
-    public Product(String title, String url, String price) {
+    private final String code;
+
+    public Product(String title, String url, String price, String code) {
         this.title = title;
         this.url = url;
         this.price = price;
+        this.code = code;
     }
 
     public String getTitle() {
@@ -22,5 +25,9 @@ public class Product {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getCode() {
+        return code;
     }
 }
