@@ -1,24 +1,20 @@
 package com.example.threadcrawler.controller;
 
-import com.example.threadcrawler.entity.Message;
-import com.example.threadcrawler.service.ExampleThread;
+import com.example.threadcrawler.RunningStats;
+import com.example.threadcrawler.entity.SearchRequest;
+import com.example.threadcrawler.service.ShopSearchThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class ScrapperController {
 
-    @Autowired
-    SimpMessagingTemplate template;
-
     @MessageMapping("/links.start")
-    public String sendMessage(@Payload Message message) {
-        System.out.println(message);
-        new ExampleThread(this.template).start();
+    public String sendMessage(@Payload SearchRequest request, @Autowired RunningStats stats) {
+        new ShopSearchThread(stats, request).start();
         return "Teste";
     }
 

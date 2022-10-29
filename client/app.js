@@ -18,8 +18,14 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/link.finish', function (greeting) {
-            console.log(greeting.body)
+        stompClient.subscribe('/topic/link.finish', function (search) {
+            console.log(search.body)
+        });
+        stompClient.subscribe('/topic/link.stats.count', function (count) {
+            console.log(count.body)
+        });
+        stompClient.subscribe('/topic/link.stats.term', function (term) {
+            console.log(term.body)
         });
     });
 }
