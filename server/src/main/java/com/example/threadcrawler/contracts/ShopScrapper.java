@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ShopScrapper {
 
-     Product getProductFromElement(Element element) throws IOException;
+     Product getProductFromElement(Element element) throws IOException, InterruptedException;
 
      List<Element> getElements();
 }

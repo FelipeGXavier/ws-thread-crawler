@@ -9,6 +9,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class ScrapperController {
 
@@ -16,8 +18,11 @@ public class ScrapperController {
     private SimpMessagingTemplate template;
 
     @MessageMapping("/links.start")
-    public String sendMessage(@Payload SearchRequest request) {
-        new ShopSearchThread(new RunningStats(this.template), request).start();
+    public String sendMessage(@Payload List<SearchRequest> data) {
+        var stats = new RunningStats(this.template);
+        for (var request : data) {
+            new ShopSearchThread(stats, request).start();
+        }
         return "Ok";
     }
 

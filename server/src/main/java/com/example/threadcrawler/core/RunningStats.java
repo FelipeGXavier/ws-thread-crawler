@@ -31,7 +31,7 @@ public class RunningStats {
         this.template.convertAndSend("/topic/link.stats.term", new TermObjectResponse(term, shop));
     }
 
-    public synchronized void finish(SearchRequest request, List<Product> products) {
+    public synchronized void finish(List<Product> products) {
         long endTime = System.currentTimeMillis();
         long runningTime = (endTime - this.startTime) / 1000;
         this.template.convertAndSend("/topic/link.finish", new FinishObjectResponse(runningTime, products));

@@ -23,12 +23,4 @@ public class WebSocketEventListener {
         logger.info("Received a new web socket connection {} {}", Thread.currentThread().getName(), event.getSource());
     }
 
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-        String username = headerAccessor.getSessionAttributes().get("username").toString();
-        if (username != null) {
-            logger.info("User Disconnected : " + username);
-        }
-    }
 }

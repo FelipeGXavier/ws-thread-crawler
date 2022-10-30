@@ -28,6 +28,12 @@ public class ShopSearchThread extends Thread {
         for (var term : request.getTerms()) {
             var t = new TermSearchThread(this.request.getShop(), term, this.stats);
             Future<List<Product>> productsFromTerm = executor.submit(t);
+            try {
+                // Prevent request denied
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             productsSearching.add(productsFromTerm);
         }
         var products = productsSearching.stream().flatMap(productsSearched -> {
@@ -37,6 +43,6 @@ public class ShopSearchThread extends Thread {
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toList());
-        this.stats.finish(this.request, products);
+        this.stats.finish(products);
     }
 }

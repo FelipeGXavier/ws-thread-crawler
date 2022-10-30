@@ -17,13 +17,15 @@ public class ColomboScrapper implements ShopScrapper {
         this.document = document;
     }
 
-    public Product getProductFromElement(Element element) throws IOException {
+    public Product getProductFromElement(Element element) throws IOException, InterruptedException {
         String productName = element.selectFirst("div.nm-product-name").text();
         String productUrl = "http:" + element.selectFirst("a").attr("href");
         String productPrice = element.selectFirst("div.nm-currency-price").text();
+        // Prevent request denied
+        Thread.sleep(500);
         Document detail = Jsoup.connect(productUrl).get();
         String code = detail.selectFirst("p:contains(Cód)").text();
-        return new Product(productName, productUrl, productPrice, code);
+        return new Product(productName, productUrl, productPrice, code, "Colombo");
     }
 
     public List<Element> getElements() {
