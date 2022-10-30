@@ -1,22 +1,20 @@
 package com.example.threadcrawler.core;
 
 import com.example.threadcrawler.entity.Product;
-import com.example.threadcrawler.entity.SearchRequest;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 @Component
-@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RunningStats {
     private int runningSearches;
     private final long startTime = System.currentTimeMillis();
-
     private final SimpMessagingTemplate template;
+
+    private final Logger logger = LoggerFactory.getLogger(RunningStats.class);
 
     public RunningStats(SimpMessagingTemplate template) {
         this.template = template;
@@ -34,8 +32,10 @@ public class RunningStats {
     public synchronized void finish(List<Product> products) {
         long endTime = System.currentTimeMillis();
         long runningTime = (endTime - this.startTime) / 1000;
-        this.template.convertAndSend("/topic/link.finish", new FinishObjectResponse(runningTime, products));
+        logger.debug("Running time {}", runningTime);
+        this.template.convertAndSend("/topic/link.finish", new FinishObjectResponse(products));
     }
+
 }
 
 class TermObjectResponse {
@@ -57,17 +57,12 @@ class TermObjectResponse {
 }
 
 class FinishObjectResponse {
-    private final long time;
     private final List<Product> products;
 
-    FinishObjectResponse(long time, List<Product> products) {
-        this.time = time;
+    FinishObjectResponse(List<Product> products) {
         this.products = products;
     }
 
-    public long getTime() {
-        return time;
-    }
 
     public List<Product> getProducts() {
         return products;

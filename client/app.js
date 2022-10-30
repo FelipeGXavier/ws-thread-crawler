@@ -24,7 +24,7 @@ addSearch.addEventListener('click', (e) => {
          <label for="shop">Loja:</label>
          <select id="shop" class="form-select shop">
            <option value="colombo">Colombo</option>
-           <option value="pontofrio">Pontofrio</option>
+           <option value="girafa">Girafa</option>
          </select>
        </div>
      </div>
@@ -33,6 +33,7 @@ addSearch.addEventListener('click', (e) => {
 })
 
 btn.addEventListener("click", (e) => {
+    resetResults();
     const elements = [...document.querySelectorAll(".element")];
     const objectsSearch = elements.map(el => {
         const shop = el.querySelector("#shop");
@@ -65,20 +66,33 @@ function connect() {
                 </div>
               </div>`
             }).join("");
-            load.innerHTML = `Tempo percorrido: ${data.time}s`;
+            load.innerHTML = "";
             results.insertAdjacentHTML('beforeend', items);
         });
         stompClient.subscribe('/topic/link.stats.count', function (count) {
             found.innerHTML = count.body;
         });
         stompClient.subscribe('/topic/link.stats.term', function (term) {
-            console.log("Chegou termo", term);
             ++termProgressCounter;
             const width = ((termProgressCounter / numTerms) * 100).toString() + "%";
             bar.style.width = width;
             bar.innerHTML = `${termProgressCounter}/${numTerms}`;
         });
     });
+}
+
+function resetInputs() {
+
+}
+
+function resetResults() {
+    load.innerHTML = "Carregando...";
+    bar.style.width = "";
+    bar.innerHTML = "";
+    results.innerHTML = "";
+    found.innerHTML = "0";
+    termProgressCounter = 0;
+    numTerms = 0;
 }
 
 function disconnect() {

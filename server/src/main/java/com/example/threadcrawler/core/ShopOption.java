@@ -8,9 +8,9 @@ public enum ShopOption {
         }
     },
 
-    PONTOFRIO {
+    GIRAFA {
         public String toString() {
-            return "pontofrio";
+            return "girafa";
         }
     }
 

@@ -41,8 +41,9 @@ public class TermSearchThread implements Callable<List<Product>> {
         if (this.shop.toLowerCase().equals(ShopOption.COLOMBO.toString())) {
             Document document = Jsoup.connect(String.format("https://pesquisa.colombo.com.br/busca?q=%s&televendas=0", this.term)).get();
             return new ColomboScrapper(document);
-        } else if (this.shop.toLowerCase().equals(ShopOption.PONTOFRIO.toString())) {
-            //return "https://pesquisa.colombo.com.br/busca?q=%s&televendas=0";
+        } else if (this.shop.toLowerCase().equals(ShopOption.GIRAFA.toString())) {
+            Document document = Jsoup.connect(String.format("https://www.girafa.com.br/busca/?q=%s", "tv")).get();
+            return new GirafaScrapper(document);
         }
         return null;
     }
